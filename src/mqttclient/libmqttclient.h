@@ -199,10 +199,8 @@ public:
     static quint16 MqttKeepAlive;
     static QStringList MqttSubscribeTopic;
     static QList<qint32>MqttSUBQos;
-//    static QList<QList<qint32>>MqttSUBQosClientx;
     static QStringList MqttPublishTopic;
     static QList<qint32>MqttPUBQos;
-//    static QList<QList<qint32>>MqttPUBQosClientx;
 private:
     bool UseSSL = false;/**< 使用ssl*/
 #if defined(Q_CC_MINGW)

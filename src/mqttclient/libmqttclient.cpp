@@ -1359,8 +1359,10 @@ void Libmqttclient::MqttConfigInit()
             ui->textBrowser->append("ProtocolVersion：V5.0");
             break;
     }
+#if defined(Q_CC_MINGW)
     /*过去默认加密配置*/
     sslConfig = QSslConfiguration::defaultConfiguration();
+#endif
 
     /*设置自动保活*/
     MqttClient->setAutoKeepAlive(true);
