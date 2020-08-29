@@ -1,13 +1,13 @@
 @[toc](基于QTmqtt客户端多种配置)
 最近项目上要用到mqtt，当然了现在mqtt都已经是物联网时代的标配组件了，之前是C端的使用基于mosquitto库没有做过界面的，现在基于`qmqtt开源库14.2`编写的ui界面，当然以后可能经常调用，已经封装成库的形式。
 # 效果图
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200826115151790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mjg5MjEwMQ==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](doc\1)
 # 主要功能
 ## 配置功能
 软件启动首先会查找配置文件`MQTT_CONFIG.json`没有就会生成新的默认配置
 > windows端默认在程序启动处查找
 > linux端在/etc目录查找
-> ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200829235642625.png#pic_center)
+> ![在这里插入图片描述](doc\2)
 
 内容格式如下：
 - 为啥有四个配置呢，因为当初设想做成多配置启动或者连接多个平台
@@ -118,14 +118,15 @@
 ## 编译前的修改确认
 - windows端编译源码，编译器默认使用`mingw64`
 - **SSL加密功能**，源码中默认在linux中不启用ssl加密功能因为涉及到大多数linux端的开发为嵌入式，qt的源码编译裁剪项大多数取消了openssl加入链接，如需启用则自行修改源码，取消宏的判断。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830002550857.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mjg5MjEwMQ==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](doc\3)
 ## 编译
 **这里以windows端为例**
 1、使用==qtcreator==打开源码工程的`libmqttclient.pro`文件，配置好编译器，为mingw64，选择release版本编译。
 
 编译生成结果如下目录：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200830004000963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80Mjg5MjEwMQ==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](doc\4)
 编译生成两个库文件：1、客户端库文件==mqttclient.dll== 2、客户端依赖的qmqtt14.2库文件==Qt5Mqtt.dll==
+
 - 其中`lib`文件夹内有qmqtt14.2的库文件
 - `src/mqttclient/release`目录下有ui界面客户端的库文件
 - `include`有qmqtt14.2头文件文件
