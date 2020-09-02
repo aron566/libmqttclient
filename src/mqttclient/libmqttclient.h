@@ -148,6 +148,10 @@ public:
     void SetReconnectInterval(qint32 msec);             /**< 设置重连检测周期*/
     void NetworkPingCheck(QString netaddr);             /**< 检测指定ip是否能够ping通*/
     void SwitchClientConfig(quint8 clientNum = 0);      /**< 切换客户端配置*/
+    void setUsername(QString &user ,QString &Key ,bool Writeflash = false ,quint8 configindex = 0);      /**< 设置用户名和密码*/
+    void setHostIPAddr(QString &addr ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机IP地址*/
+    void setHostRealmAddr(QString &addr ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机域名地址*/
+    void setHostPort(quint16 port ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机端口地址*/
     void setProtocolVersion(QMqttClient::ProtocolVersion protocolVersion);/**< 设置版本*/
     QMqttClient::ClientState GetMqttConnectState()const;/**< 获取mqtt连接状态 0未连接 1连接中 2已连接*/
     void UNsubscribe_all();                             /**< 取消全部订阅*/

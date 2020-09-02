@@ -1802,6 +1802,104 @@ void Libmqttclient::SwitchClientConfig(quint8 clientNum)
 }
 
 /**
+ * @brief Libmqttclient::setUsername
+ * @param user
+ * @param Key
+ * @param Writeflash
+ * @param configindex
+ */
+void Libmqttclient::setUsername(QString &user ,QString &Key ,bool Writeflash ,quint8 configindex)
+{
+    quint8 temp = ActiveClientNum;
+    ui->USERNAMElineEdit->setText(user);
+    ui->KEYWORDlineEdit->setText(Key);
+    if(Writeflash == true)
+    {
+        ActiveClientNum = configindex;
+        DataChanged_Flag |= USER_NAME_CHANGED;
+        on_confirmpushButton_clicked();
+        ActiveClientNum = temp;
+    }
+    else
+    {
+        MqttUserName = user;
+        MqttUserKey = Key;
+    }
+}
+
+/**
+ * @brief Libmqttclient::setHostIPAddr
+ * @param addr
+ * @param Writeflash
+ * @param configindex
+ */
+void Libmqttclient::setHostIPAddr(QString &addr ,bool Writeflash ,quint8 configindex)
+{
+    quint8 temp = ActiveClientNum;
+    ui->HOSTIPlineEdit->setText(addr);
+
+    if(Writeflash == true)
+    {
+        ActiveClientNum = configindex;
+        DataChanged_Flag |= SERVER_IP_CHANGED;
+        on_confirmpushButton_clicked();
+        ActiveClientNum = temp;
+    }
+    else
+    {
+        MqttServerIp = addr;
+    }
+}
+
+/**
+ * @brief Libmqttclient::setHostRealmAddr
+ * @param addr
+ * @param Writeflash
+ * @param configindex
+ */
+void Libmqttclient::setHostRealmAddr(QString &addr ,bool Writeflash ,quint8 configindex)
+{
+    quint8 temp = ActiveClientNum;
+    ui->HOSTNAMElineEdit->setText(addr);
+
+    if(Writeflash == true)
+    {
+        ActiveClientNum = configindex;
+        DataChanged_Flag |= HOST_NAME_CHANGED;
+        on_confirmpushButton_clicked();
+        ActiveClientNum = temp;
+    }
+    else
+    {
+        MqttServerAddr = addr;
+    }
+}
+
+/**
+ * @brief Libmqttclient::setHostPort
+ * @param port
+ * @param Writeflash
+ * @param configindex
+ */
+void Libmqttclient::setHostPort(quint16 port ,bool Writeflash ,quint8 configindex)
+{
+    quint8 temp = ActiveClientNum;
+    ui->HOSTPORTlineEdit->setText(QString("%1").arg(port));
+
+    if(Writeflash == true)
+    {
+        ActiveClientNum = configindex;
+        DataChanged_Flag |= SERVER_PORT_CHANGED;
+        on_confirmpushButton_clicked();
+        ActiveClientNum = temp;
+    }
+    else
+    {
+        MqttServerPort = port;
+    }
+}
+
+/**
  * @brief Libmqttclient::setProtocolVersion
  * @param protocolVersion
  */
