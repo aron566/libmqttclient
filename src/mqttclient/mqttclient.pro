@@ -11,17 +11,32 @@ TEMPLATE = lib
 DEFINES += LIBMQTTCLIENT_LIBRARY
 
 SOURCES += \
-    customerwidgetitem.cpp \
-    libmqttclient.cpp
+    $$PWD/customerwidgetitem.cpp \
+    $$PWD/libmqttclient.cpp
 
 HEADERS += \
-    customerwidgetitem.h \
-    libmqttclient_global.h \
-    libmqttclient.h \
-    ui_libmqttclient.h
+    $$PWD/customerwidgetitem.h \
+    $$PWD/libmqttclient_global.h \
+    $$PWD/libmqttclient.h \
+    $$PWD/ui_libmqttclient.h
 
 INCLUDEPATH += ../mqtt/
 DEPENDPATH +=  ../mqtt/
 
-# must be exist
-#load(qt_module)
+
+
+BEFORE_LINK_CMD_LINE =echo Start build mqttclient.
+QMAKE_PRE_LINK += $$quote($$BEFORE_LINK_CMD_LINE)
+
+## linux
+unix:!macx: AFTER_LINK_CMD_LINE_COPY =cp -a release/** ../../lib/
+
+# windows
+win32: AFTER_LINK_CMD_LINE_COPY =copy .\\release\\* ..\\..\\lib\\
+
+QMAKE_POST_LINK += $$quote($$AFTER_LINK_CMD_LINE_COPY)
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
