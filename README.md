@@ -200,8 +200,9 @@ MqttWindow->show();
 2、在你的工程源码根目录建立`mqtt`目录，mqtt目录下再建立`lib`，`QtMqtt`两个目录。
 3、将编译生成的qmqtt库文件(源码编译生成的lib目录下)：`Qt5Mqtt.dll`、`Qt5Mqtt.a`复制到你的工程`mqtt/lib`目录下
 4、复制qmqtt所有的头文件((源码编译生成的include目录下))，到你的工程`mqtt/QtMqtt`目录下
-5、将编译生成的mqttclient库文件(源码编译生成的src/mqttclient/release目录下)：`mqttclient.dll`复制到你的工程`mqtt/lib`目录下
+5、将编译生成的mqttclient库文件(`源码编译生成的src/mqttclient/release目录下`或者`源码编译生成的lib目录下`)：`mqttclient.dll`复制到你的工程`mqtt/lib`目录下
 6、在你的工程.pro文件增加如下：
+
 ```bash
 # qmqtt windows
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/mqtt/lib/ -lQt5Mqtt
@@ -248,6 +249,10 @@ static bool NetworkConnectCheck(QString netaddr);   /**< 检测与指定外网�
 void SetReconnectInterval(qint32 msec);             /**< 设置重连检测周期*/
 void NetworkPingCheck(QString netaddr);             /**< 检测指定ip是否能够ping通*/
 void SwitchClientConfig(quint8 clientNum = 0);      /**< 切换客户端配置*/
+void setUsername(QString &user ,QString &Key ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置用户名和密码*/
+void setHostIPAddr(QString &addr ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机IP地址*/
+void setHostRealmAddr(QString &addr ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机域名地址*/
+void setHostPort(quint16 port ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机端口地址*/
 void setProtocolVersion(QMqttClient::ProtocolVersion protocolVersion);/**< 设置版本*/
 QMqttClient::ClientState GetMqttConnectState()const;/**< 获取mqtt连接状态 0未连接 1连接中 2已连接*/
 void UNsubscribe_all();                             /**< 取消全部订阅*/
