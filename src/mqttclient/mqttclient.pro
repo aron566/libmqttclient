@@ -29,7 +29,7 @@ BEFORE_LINK_CMD_LINE =echo Start build mqttclient.
 QMAKE_PRE_LINK += $$quote($$BEFORE_LINK_CMD_LINE)
 
 ## linux
-unix:!macx: AFTER_LINK_CMD_LINE_COPY =cp -a release/* ../../lib/
+unix:!macx: AFTER_LINK_CMD_LINE_COPY =cp -a lib* ../../lib/
 
 # windows
 win32: AFTER_LINK_CMD_LINE_COPY =copy .\\release\\* ..\\..\\lib\\
