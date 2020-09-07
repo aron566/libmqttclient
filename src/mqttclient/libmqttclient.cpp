@@ -1359,10 +1359,9 @@ void Libmqttclient::MqttConfigInit()
             ui->textBrowser->append("ProtocolVersion：V5.0");
             break;
     }
-#if defined(Q_CC_MINGW)
-    /*过去默认加密配置*/
+
+    /*获取默认加密配置*/
     sslConfig = QSslConfiguration::defaultConfiguration();
-#endif
 
     /*设置自动保活*/
     MqttClient->setAutoKeepAlive(true);
@@ -1562,6 +1561,7 @@ bool Libmqttclient::DeleteSubscribe(QString topicStr ,bool manual_flag)
     /*提示信息*/
     if(manual_flag == true)
     {
+        ui->SUBSCRIBElineEdit->setText("");
         QMessageBox::critical(this,tr("Error"),tr("<p><span style='color: rgb(255, 0, 80);font-size: 24px;'>取消订阅失败！未找到.</span></p>"));
     }
     return false;
@@ -1678,6 +1678,7 @@ bool Libmqttclient::DeletePublish(QString topicStr ,bool manual_flag)
     }
     if(manual_flag == true)
     {
+        ui->PUBLISHlineEdit->setText("");
         QMessageBox::critical(this,tr("Error"),tr("<p><span style='color: rgb(255, 0, 80);font-size: 24px;'>取消发布失败！未找到.</span></p>"));
     }
     return false;
@@ -1906,6 +1907,30 @@ void Libmqttclient::setHostPort(quint16 port ,bool Writeflash ,quint8 configinde
 void Libmqttclient::setProtocolVersion(QMqttClient::ProtocolVersion protocolVersion)
 {
     MqttClient->setProtocolVersion(protocolVersion);
+}
+
+/**
+ * @brief Libmqttclient::setWillConfig
+ * @param willQoS 设置遗属qos
+ * @param willTopic 设置遗属主题
+ * @param willMessage 设置遗属消息
+ * @param willRetain 设置遗属保留
+ */
+void Libmqttclient::setWillMsgConfig(const QString &willTopic ,const QByteArray &willMessage ,quint8 willQoS ,bool willRetain)
+{
+    MqttClient->setWillQoS(willQoS);
+    MqttClient->setWillTopic(willTopic);
+    MqttClient->setWillMessage(willMessage);
+    MqttClient->setWillRetain(willRetain);
+}
+
+/**
+ * @brief Libmqttclient::setCleanSession
+ * @param cleanSession flase 建立持久连接
+ */
+void Libmqttclient::setCleanSession(bool cleanSession)
+{
+     MqttClient->setCleanSession(cleanSession);
 }
 
 /**

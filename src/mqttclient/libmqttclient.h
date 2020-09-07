@@ -153,6 +153,8 @@ public:
     void setHostRealmAddr(QString &addr ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机域名地址*/
     void setHostPort(quint16 port ,bool Writeflash = false ,quint8 configindex = 0);/**< 设置主机端口地址*/
     void setProtocolVersion(QMqttClient::ProtocolVersion protocolVersion);/**< 设置版本*/
+    void setWillMsgConfig(const QString &willTopic ,const QByteArray &willMessage ,quint8 willQoS = 0 ,bool willRetain = false);/**< 设置遗属消息*/
+    void setCleanSession(bool cleanSession = true);/**< false表示创建一个持久会话，在客户端断开连接时，会话仍然保持并保存离线消息，直到会话超时注销*/
     QMqttClient::ClientState GetMqttConnectState()const;/**< 获取mqtt连接状态 0未连接 1连接中 2已连接*/
     void UNsubscribe_all();                             /**< 取消全部订阅*/
     void UNpublish_all();                               /**< 取消全部发布*/
@@ -207,9 +209,7 @@ public:
     static QList<qint32>MqttPUBQos;
 private:
     bool UseSSL = false;/**< 使用ssl*/
-#if defined(Q_CC_MINGW)
     QSslConfiguration sslConfig;
-#endif
     quint8 ActiveClientNum = 0;/**< 激活指定客户端*/
     quint32 DataChanged_Flag = 0;
     bool MqttConnectState = false;
