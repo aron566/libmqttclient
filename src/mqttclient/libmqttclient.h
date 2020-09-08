@@ -189,6 +189,7 @@ private:
     bool DeletePublish(QString topicStr ,bool manual_flag = false);
     void CloseDebugMode();
     void OpenDebugMode();
+    void CheckDebugbrowserIsFull();
 private:
     Ui::libmqttclient *ui;
     QTimer *NetworkCheckTimer;

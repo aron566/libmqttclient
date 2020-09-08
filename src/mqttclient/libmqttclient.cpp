@@ -1709,7 +1709,7 @@ qint32 Libmqttclient::PublishMsg(QString topicStr ,QByteArray msg)
                 break;
             }
         }
-
+        CheckDebugbrowserIsFull();
         if(ret != 0)
         {
             /*显示到消息区*/
@@ -2049,6 +2049,7 @@ void Libmqttclient::slotConnected()
 
     /*显示到消息区*/
     QString str;
+    CheckDebugbrowserIsFull();
     str = QDateTime::currentDateTime().toString();
     ui->textBrowser->append(str + green_prefix + ": Connected To Server OK." + font_suffix);
     ui->textBrowser->moveCursor(QTextCursor::End);
@@ -2077,12 +2078,9 @@ void Libmqttclient::slotDisconnected()
     /*显示到消息区*/
     QString str;
     str = QDateTime::currentDateTime().toString();
+    CheckDebugbrowserIsFull();
     ui->textBrowser->append(str + red_prefix + ": Disconnected From Server OK." + font_suffix);
     ui->textBrowser->moveCursor(QTextCursor::End);
-    if(ui->textBrowser->isFullScreen() == true)
-    {
-        ui->textBrowser->setText("");
-    }
 }
 
 /**
@@ -2094,18 +2092,18 @@ void Libmqttclient::slotPingResponse()
     QString str;
     if(DebugMode == false)
     {
+        CheckDebugbrowserIsFull();
         str = QDateTime::currentDateTime().toString();
         ui->textBrowser->append(str + blue_prefix + ": Ping Request Return OK." + font_suffix);
         ui->textBrowser->moveCursor(QTextCursor::End);
     }
-
+    CurrentlineCnt++;
     if(CurrentlineCnt > 20)
     {
+        CurrentlineCnt = 0;
+        ui->textBrowser->clearHistory();
+        ui->textBrowser->clear();
         ui->textBrowser->setText("");
-    }
-    if(ui->textBrowser->isFullScreen() == true)
-    {
-        CurrentlineCnt = 20;
     }
 }
 
@@ -2123,6 +2121,7 @@ void Libmqttclient::slotMessageReceived(const QByteArray &message, const QMqttTo
     str += QLatin1String(" Message: ") + font_suffix;// + QLatin1Char('\n');
 
     /*显示到消息区*/
+    CheckDebugbrowserIsFull();
     ui->textBrowser->append(str);
     ui->textBrowser->append(green_prefix +"【" + message + "】" + font_suffix);
     ui->textBrowser->moveCursor(QTextCursor::End);
@@ -2501,7 +2500,7 @@ void Libmqttclient::on_PUBLISHlineEdit_editingFinished()
  */
 void Libmqttclient::on_HOSTNAMElineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->HOSTNAMElineEdit,"输入服务器域名",ui->HOSTNAMElineEdit->text());
+    emit show_keyboard(this ,ui->HOSTNAMElineEdit ,"输入服务器域名" ,ui->HOSTNAMElineEdit->text());
     this->hide();
 }
 
@@ -2510,7 +2509,7 @@ void Libmqttclient::on_HOSTNAMElineEdit_selectionChanged()
  */
 void Libmqttclient::on_HOSTIPlineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->HOSTIPlineEdit,"输入服务器IP",ui->HOSTIPlineEdit->text());
+    emit show_keyboard(this ,ui->HOSTIPlineEdit ,"输入服务器IP" ,ui->HOSTIPlineEdit->text());
     this->hide();
 }
 
@@ -2519,7 +2518,7 @@ void Libmqttclient::on_HOSTIPlineEdit_selectionChanged()
  */
 void Libmqttclient::on_HOSTPORTlineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->HOSTPORTlineEdit,"输入服务器端口",ui->HOSTPORTlineEdit->text());
+    emit show_keyboard(this ,ui->HOSTPORTlineEdit ,"输入服务器端口" ,ui->HOSTPORTlineEdit->text());
     this->hide();
 }
 
@@ -2528,7 +2527,7 @@ void Libmqttclient::on_HOSTPORTlineEdit_selectionChanged()
  */
 void Libmqttclient::on_USERNAMElineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->USERNAMElineEdit,"输入用户名",ui->USERNAMElineEdit->text());
+    emit show_keyboard(this ,ui->USERNAMElineEdit ,"输入用户名" ,ui->USERNAMElineEdit->text());
     this->hide();
 }
 
@@ -2537,7 +2536,7 @@ void Libmqttclient::on_USERNAMElineEdit_selectionChanged()
  */
 void Libmqttclient::on_KEYWORDlineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->KEYWORDlineEdit,"输入用户密码",ui->KEYWORDlineEdit->text());
+    emit show_keyboard(this ,ui->KEYWORDlineEdit ,"输入用户密码" ,ui->KEYWORDlineEdit->text());
     this->hide();
 }
 
@@ -2546,7 +2545,7 @@ void Libmqttclient::on_KEYWORDlineEdit_selectionChanged()
  */
 void Libmqttclient::on_SUBSCRIBElineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->SUBSCRIBElineEdit,"输入订阅主题",ui->SUBSCRIBElineEdit->text());
+    emit show_keyboard(this ,ui->SUBSCRIBElineEdit ,"输入订阅主题" ,ui->SUBSCRIBElineEdit->text());
     this->hide();
 }
 
@@ -2555,7 +2554,7 @@ void Libmqttclient::on_SUBSCRIBElineEdit_selectionChanged()
  */
 void Libmqttclient::on_PUBLISHlineEdit_selectionChanged()
 {
-    emit show_keyboard(this ,ui->PUBLISHlineEdit,"输入发布主题",ui->PUBLISHlineEdit->text());
+    emit show_keyboard(this ,ui->PUBLISHlineEdit ,"输入发布主题" ,ui->PUBLISHlineEdit->text());
     this->hide();
 }
 
@@ -2579,11 +2578,13 @@ void Libmqttclient::on_SENDMSGpushButton_clicked()
         qint32 ret = MqttClient->publish(topicStr ,ui->DEBUGlineEdit->text().toUtf8() ,static_cast<quint8>(ui->PUBLISHQOSspinBox->value()&0x000000FF));
         if(ret == 0)
         {
+            CheckDebugbrowserIsFull();
             ui->textBrowser->append(orange_prefix +"--->" + "Send msg ok" + font_suffix);
             ui->textBrowser->moveCursor(QTextCursor::End);
         }
         else
         {
+            CheckDebugbrowserIsFull();
             ui->textBrowser->append(red_prefix +"--->" + "Send msg error" + font_suffix);
             ui->textBrowser->moveCursor(QTextCursor::End);
         }
@@ -2613,6 +2614,19 @@ void Libmqttclient::OpenDebugMode()
     ui->DEBUGlineEdit->setEnabled(true);
     ui->DEBUGlineEdit->setVisible(true);
     DebugMode = true;
+}
+
+/**
+ * @brief Libmqttclient::CheckDebugbrowser
+ */
+void Libmqttclient::CheckDebugbrowserIsFull()
+{
+    if(ui->textBrowser->isFullScreen() == true)
+    {
+        ui->textBrowser->clearHistory();
+        ui->textBrowser->clear();
+        ui->textBrowser->setText("");
+    }
 }
 
 /**
