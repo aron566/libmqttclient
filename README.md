@@ -152,6 +152,14 @@ else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/mqtt
 # qmqtt linux
 unix:!macx: LIBS += -L$$PWD/mqtt/lib/
 unix:!macx: LIBS += -lQt5Mqtt
+
+# windows mqttclient库
+win32: LIBS += -L$$PWD/mqtt/lib/
+win32: LIBS += -lmqttclient
+
+# linux mqttclient库
+unix:!macx: LIBS += -L$$PWD/mqtt/lib/
+unix:!macx: LIBS += -lmqttclient
 ```
 5、在你的工程`mqtt`目录下建立`mqttclient.pri`文件
 	 填入如下内容：
