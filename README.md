@@ -1,8 +1,8 @@
-[![issues](https://img.shields.io/github/issues/aron566/libmqttclient)](https://github.com/aron566/libmqttclient/issues)
 ![forks](https://img.shields.io/github/forks/aron566/libmqttclient)
 ![stars](https://img.shields.io/github/stars/aron566/libmqttclient)
 [![license](https://img.shields.io/github/license/aron566/libmqttclient)](https://github.com/aron566/libmqttclient/blob/master/LICENSE)
 ![](https://img.shields.io/badge/platform-Linux|Windows|Mac|Embedded-orange.svg)
+
 @[toc](基于QTmqtt客户端多种配置)
 最近项目上要用到mqtt，当然了现在mqtt都已经是物联网时代的标配组件了，之前是C端的使用基于mosquitto库没有做过界面的，现在基于`qmqtt开源库14.2`编写的ui界面，当然以后可能经常调用，已经封装成库的形式。
 
