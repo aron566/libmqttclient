@@ -127,6 +127,46 @@
 ## 网络检测
 这个没啥说的，网上多数检测是阻塞不适合界面操作，这里修改了下为异步非阻塞，算是优化功能项吧。
 - 当网络异常会发送一个异常的信号进行异步通知。
+
+收录一个Linux端的网络检测
+
+```c
+int net_is_ok(const char *ip)
+{
+    int i, status;
+    pid_t pid;
+    // 不同则循环检测多次
+    for (i = 0; i < 3; ++i)
+    {
+        // 新建一个进程来执行ping命令
+        if ((pid = vfork()) < 0)
+        {
+            printf("vfork error");
+            continue;
+        }
+ 
+        if (pid == 0)
+        {
+            // 执行ping命令
+            if ( execlp("ping", "ping", "-c", "1", ip, (char*)0) < 0)
+            {
+                printf("execlp error\n");
+                exit(1);
+            }
+        }
+        waitpid(pid, &status, 0);
+        // 相等说明正常
+        if (status == 0)
+        {
+            return 0;
+        }
+    }
+    return -1;
+}
+```
+
+
+
 ## 调试功能
 - 调试功能打开后在消息区下方会出现一个小的输入框用于编辑需发送的内容，此时将发布区topic上填写需发送的主题，qos为0，点击发送即可。
 - 若你已订阅了与发送topic相同的主题，可接收到发送的消息到消息区显示。
